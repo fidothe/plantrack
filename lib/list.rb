@@ -51,11 +51,11 @@ class List
   end
   
   def prioritised_stories
-    @prioritised_stories ||= prioritised_story_data.collect { |story_data| make_story(story_data) }
+    @prioritised_stories ||= prioritised_story_data.collect { |story_data| make_story(*story_data) }
   end
   
   def unprioritised_stories
-    @unprioritised_stories ||= (unprioritised_story_data + unaccounted_for_story_data).collect { |story_data| make_story(story_data) }
+    @unprioritised_stories ||= (unprioritised_story_data + unaccounted_for_story_data).collect { |story_data| make_story(*story_data) }
   end
   
   def serialise!

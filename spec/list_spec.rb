@@ -123,14 +123,14 @@ describe List do
     end
     
     it "should expose a list of prioritised story objects" do
-      @list.expects(:make_story).with(['BacklogItem.story', 'BacklogItem', 'Title']).returns(:story)
+      @list.expects(:make_story).with('BacklogItem.story', 'BacklogItem', 'Title').returns(:story)
       @list.stubs(:prioritised_story_data).returns([['BacklogItem.story', 'BacklogItem', 'Title']])
       @list.prioritised_stories.should == [:story]
     end
     
     it "should expose a list of unprioritised story objects" do
-      @list.expects(:make_story).with(['BacklogItem.story', 'BacklogItem', 'Title']).returns(:story_one)
-      @list.expects(:make_story).with(['AnotherBacklogItem.story', 'AnotherBacklogItem', nil]).returns(:story_two)
+      @list.expects(:make_story).with('BacklogItem.story', 'BacklogItem', 'Title').returns(:story_one)
+      @list.expects(:make_story).with('AnotherBacklogItem.story', 'AnotherBacklogItem', nil).returns(:story_two)
       @list.stubs(:unprioritised_story_data).returns([['BacklogItem.story', 'BacklogItem', 'Title']])
       @list.stubs(:unaccounted_for_story_data).returns([['AnotherBacklogItem.story', 'AnotherBacklogItem', nil]])
       @list.unprioritised_stories.should == [:story_one, :story_two]
