@@ -1,0 +1,3 @@
+title: Story title
+---
+What a great feature
