@@ -107,19 +107,32 @@ module Plantrack
       Story.new(path, name, title)
     end
     
+    def serialised_story(story, output_lines, max_story_name_length, line_padding)
+      line_wrap_position = 75
+      first_line_padding = max_story_name_length - story.name.length
+      unwrapped_story_text = "#{' ' * first_line_padding}[#{story.name}]: #{story.title}"
+      break_position = unwrapped_story_text.rindex(/\s/, line_wrap_position)
+      while (unwrapped_story_text.length > line_wrap_position) && break_position && (break_position < unwrapped_story_text.length)
+        output_lines << unwrapped_story_text[0..break_position]
+        unwrapped_story_text = (' ' * line_padding) + (unwrapped_story_text[break_position..-1].strip)
+        break_position = unwrapped_story_text.rindex(/\s/, line_wrap_position)
+      end
+      output_lines << unwrapped_story_text
+    end
+    
     def serialised_text
       max_story_name_length = (prioritised_stories + unprioritised_stories).max { |a, b| a.name.length <=> b.name.length }.name.length
-      story_lines = prioritised_stories.collect do |story|
-        first_line_padding = max_story_name_length - story.name.length
-        (' ' * first_line_padding) + "[#{story.name}]: #{story.title}"
+      line_padding = max_story_name_length + 4 # 2 for the square brackets, 1 for the colon, and 1 for the space
+      story_lines = []
+      prioritised_stories.each do |story|
+        serialised_story(story, story_lines, max_story_name_length, line_padding)
       end
       story_lines << ''
       unless unprioritised_stories.empty?
-        story_lines << (' ' * max_story_name_length) + ' ----'
+        story_lines << (' ' * line_padding) + '----'
         story_lines << ''
-        story_lines = story_lines + unprioritised_stories.collect do |story| 
-          first_line_padding = max_story_name_length - story.name.length
-          (' ' * first_line_padding) + "[#{story.name}]: #{story.title}"
+        unprioritised_stories.each do |story| 
+          serialised_story(story, story_lines, max_story_name_length, line_padding)
         end
         story_lines << ''
       end

@@ -166,7 +166,19 @@ module Plantrack
             
             List.publicize_methods do
               @list.serialised_text.
-                should == "             [BacklogItem]: My backlog item\n\n                         ----\n\n[UnprioritisedBacklogItem]: My other backlog item\n"
+                should == "             [BacklogItem]: My backlog item\n\n                            ----\n\n[UnprioritisedBacklogItem]: My other backlog item\n"
+            end
+          end
+          
+          it "should correctly wrap the text for items when serialising" do
+            mock_story = stub('Story', :name => 'BacklogItem', :title => 'My Backlog item has lots of words which mean that it will need to be broken before it hits the magic 75 column mark but only just, well maybe twice')
+            @list.stubs(:prioritised_stories).returns([mock_story])
+            @list.stubs(:unprioritised_stories).returns([])
+            
+            expected = "[BacklogItem]: My Backlog item has lots of words which mean that it will \n               need to be broken before it hits the magic 75 column mark\n               but only just, well maybe twice\n"
+            
+            List.publicize_methods do
+              @list.serialised_text.should == expected
             end
           end
         end
