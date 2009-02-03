@@ -175,7 +175,7 @@ module Plantrack
             @list.stubs(:prioritised_stories).returns([mock_story])
             @list.stubs(:unprioritised_stories).returns([])
             
-            expected = "[BacklogItem]: My Backlog item has lots of words which mean that it will \n               need to be broken before it hits the magic 75 column mark\n               but only just, well maybe twice\n"
+            expected = "[BacklogItem]: My Backlog item has lots of words which mean that it will \n               need to be broken before it hits the magic 75 column mark \n               but only just, well maybe twice\n"
             
             List.publicize_methods do
               @list.serialised_text.should == expected
