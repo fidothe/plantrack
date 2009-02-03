@@ -5,6 +5,8 @@ Spec::Runner.configure do |config|
   config.mock_with :mocha
 end
 
+require 'plantrack'
+
 def fixture_path(fixture_filename)
   File.dirname(__FILE__) + '/fixtures/' + fixture_filename
 end
