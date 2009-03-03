@@ -191,6 +191,17 @@ module Plantrack
           
           @list.serialise!
         end
+        
+        it "should be able to serialise itself and its stories to disk" do
+          mock_story = stub('Story')
+          @list.stubs(:prioritised_stories).returns([mock_story])
+          @list.stubs(:unprioritised_stories).returns([])
+          
+          mock_story.expects(:serialise!)
+          @list.expects(:serialise!)
+          
+          @list.serialise_all!
+        end
       end
     end
   end

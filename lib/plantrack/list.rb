@@ -63,6 +63,11 @@ module Plantrack
       File.open(path, 'w') { |f| f.write(serialised_text) }
     end
     
+    def serialise_all!
+      serialise!
+      (prioritised_stories + unprioritised_stories).each { |story| story.serialise! }
+    end
+    
     private
     
     def parsed_prioritised
